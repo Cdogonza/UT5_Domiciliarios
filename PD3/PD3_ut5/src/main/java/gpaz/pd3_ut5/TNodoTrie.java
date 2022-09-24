@@ -33,7 +33,7 @@ public class TNodoTrie implements INodoTrie {
         
     }
 
-    private void imprimir(String s, TNodoTrie nodo) {
+    private void imprimirIndice(String s, TNodoTrie nodo) {
         if (nodo != null) {
             if (nodo.esPalabra) {
                 System.out.println(s + nodo.indiceLibro.toString());
@@ -41,7 +41,21 @@ public class TNodoTrie implements INodoTrie {
             }
             for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
                 if (nodo.hijos[c] != null) {
-                    imprimir(s + (char) (c + 'a'), nodo.hijos[c]);
+                    imprimirIndice(s + (char) (c + 'a'), nodo.hijos[c]);
+                }
+            }
+        }
+    }
+    
+    private void imprimirTrie(String ss, TNodoTrie nodo){
+        if (nodo != null) {
+            if (nodo.esPalabra) {
+                System.out.println(ss);
+
+            }
+            for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
+                if (nodo.hijos[c] != null) {
+                    imprimirTrie(ss + (char) (c + 'a'), nodo.hijos[c]);
                 }
             }
         }
@@ -49,7 +63,10 @@ public class TNodoTrie implements INodoTrie {
 
     @Override
     public void imprimir() {
-        imprimir("", this);
+        imprimirIndice("", this);
+    }
+    public void imprimirTri(){
+        imprimirTrie("",this);
     }
 
     @Override
@@ -58,8 +75,7 @@ public class TNodoTrie implements INodoTrie {
         //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    
+    @Override   
     public int buscar(String unaPalabra) {
         TNodoTrie nodo = this;
         int comparaciones = 0;
@@ -73,6 +89,27 @@ public class TNodoTrie implements INodoTrie {
             
         }
         return comparaciones;
+    }
+    
+    public String buscarModificado(String palabra){
+        palabra = palabra.toLowerCase();
+        String resultado= "";
+        TNodoTrie nodo = this;
+        int comparaciones = 0;
+        for (int c = 0; c < palabra.length(); c++) {
+            int indice = palabra.charAt(c) - 'a';
+            comparaciones++;
+            if (nodo.hijos[indice] == null) {
+                
+               resultado = "Palabra no encontrada en el trie " + "y la cantidad de comparaciones fueron "+ comparaciones;
+               return resultado;
+            }
+            nodo = nodo.hijos[indice];
+            
+        }
+        
+            resultado = "Palabra encontrada en el trie en las paginas: "+ nodo.indiceLibro.toString();
+            return resultado;
     }
     
     private void insertIndiceLibro(String palabra, int valor){

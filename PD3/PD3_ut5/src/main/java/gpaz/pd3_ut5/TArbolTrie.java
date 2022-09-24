@@ -18,6 +18,11 @@ public class TArbolTrie implements IArbolTrie {
     @Override
     public void imprimir() {
         if (raiz != null) {
+            raiz.imprimirTri();
+        }
+    }
+    public void imprimirIndice(){
+        if (raiz != null) {
             raiz.imprimir();
         }
     }
@@ -29,6 +34,13 @@ public class TArbolTrie implements IArbolTrie {
         }
         return 0;
 
+    }
+    public String buscarModificado(String palabra){
+        if(raiz != null ){
+           return raiz.buscarModificado(palabra);           
+        }else{
+            return "";
+        }
     }
 
     @Override
