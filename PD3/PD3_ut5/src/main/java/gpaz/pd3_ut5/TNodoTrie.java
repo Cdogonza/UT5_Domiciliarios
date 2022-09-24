@@ -1,7 +1,6 @@
 package gpaz.pd3_ut5;
 
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class TNodoTrie implements INodoTrie {
@@ -9,11 +8,13 @@ public class TNodoTrie implements INodoTrie {
     private static final int CANT_CHR_ABECEDARIO = 26;
     private TNodoTrie[] hijos;
     private boolean esPalabra;
-    private final LinkedList<Object> contadorPaginas;
-    private ArrayList<Integer> paginas;        
+    private final LinkedList<Object> indiceLibro;
+
+
+         
 
     public TNodoTrie() {
-        this.contadorPaginas = new LinkedList<>();
+        this.indiceLibro = new LinkedList<>();
         hijos = new TNodoTrie[CANT_CHR_ABECEDARIO];
         esPalabra = false;
     }
@@ -35,7 +36,7 @@ public class TNodoTrie implements INodoTrie {
     private void imprimir(String s, TNodoTrie nodo) {
         if (nodo != null) {
             if (nodo.esPalabra) {
-                System.out.println(s);
+                System.out.println(s + nodo.indiceLibro.toString());
 
             }
             for (int c = 0; c < CANT_CHR_ABECEDARIO; c++) {
@@ -51,7 +52,6 @@ public class TNodoTrie implements INodoTrie {
         imprimir("", this);
     }
 
-
     @Override
     public void predecir(String prefijo, LinkedList<String> palabras) {
         throw new UnsupportedOperationException("Not supported yet."); 
@@ -59,7 +59,7 @@ public class TNodoTrie implements INodoTrie {
     }
 
     @Override
-
+    
     public int buscar(String unaPalabra) {
         TNodoTrie nodo = this;
         int comparaciones = 0;
@@ -74,45 +74,93 @@ public class TNodoTrie implements INodoTrie {
         }
         return comparaciones;
     }
-    private void insertLibro(String palabra, int valor){
+    
+    private void insertIndiceLibro(String palabra, int valor){
         TNodoTrie nodo = this;
         for (int c = 0; c < palabra.length(); c++) {
             int indice = palabra.charAt(c) - 'a';
             if (nodo.hijos[indice] == null) {
                 nodo.hijos[indice] = new TNodoTrie();
             }
-            nodo = nodo.hijos[indice];
-        }
-        if (nodo.paginas != null){
-            nodo.paginas.add(valor);
-        } else {
-            nodo.paginas = new ArrayList(1);
-            nodo.paginas.add(valor);
+            nodo = nodo.hijos[indice];                      
         }
         nodo.esPalabra = true;
+        if(nodo.indiceLibro.contains(valor)){
+            
+        }else{
+            nodo.indiceLibro.add(valor);
+        }             
     }
-    public void indizarLibro(String texto, int valor){
-        texto = texto.trim();
-        String delims = "\\W+";
-        String[] palabras = texto.split(delims);
-        for (String palabra : palabras){
-            if (palabra.compareTo("\n") != 0 || palabra.compareTo(" ") != 0){
-                insertLibro(palabra.toLowerCase(), valor);
+    // LO QUE HAGO CON ESTE METODO ES TRABAJAR CON LA ESTRUCTURA DEL LIBRO Y SACARLE TODOS LOS CARACTERES ESPECIALES Y LOS NUMERICOS SUSTITUIRLOS POR PALABRAS
+    //DESPUES LLEVANDO EL CONTADOR DE LINEAS ESTABLECEMOS EN QUE PAGINA ESTAMOS PARA PODER AGREGARSELO A LA LINKEDLIST Y FINALMENTE LLAMAR INSERTINDICELIBRO QUE 
+    // LO QUE HACE SIMPLEMENTE ES ARMAR LA ESTRUCTURA DEL TRIE CON EL INDICE SOLICITADO EN LA TAREA
+    public void indizarLibro(String[] libro, int pagina){
+        int cont=0;       
+        for (String string : libro) {
+            String stringg = string.trim().toLowerCase();
+            String[] sep = stringg.split("\\W+");            
+            for(int i=0;i<sep.length;i++){           
+                String valor = sep[i].replace("_", "");
+                String valor1 = valor.replace("1", "uno");
+                String valor2 = valor1.replace("2", "dos");
+                String valor3 = valor2.replace("3", "tres");
+                String valor4 = valor3.replace("4", "cuatro");
+                String valor5 = valor4.replace("5", "cinco");
+                String valor6 = valor5.replace("6", "seis");
+                String valor7 = valor6.replace("7", "siete");
+                String valor8 = valor7.replace("8", "ocho");
+                String valor81 = valor8.replace("9", "nueve");
+                String valor82 = valor81.replace("0", "cero");
+                String valor9[] = valor82.split(" ");
+                for (String string1 : valor9) {
+                    if(cont <=50){
+                        pagina = 1;
+                    }else if(cont>50 && cont<=100){
+                        pagina = 2;
+                    }else if(cont>100 && cont<=150){
+                        pagina = 3;
+                    }else if(cont>150 && cont<=200){
+                        pagina = 4;
+                    }else if(cont>200 && cont<=250){
+                        pagina = 5;
+                    }else if(cont>250 && cont<=300){
+                        pagina =6;
+                    }else if(cont>300 && cont<=350){
+                        pagina = 7;
+                    }else if(cont>350 && cont<=400){
+                        pagina = 8;
+                    }else if(cont>400 && cont<=450){
+                        pagina = 9;
+                    }else if(cont>450 && cont<=500){
+                        pagina = 10;
+                    }else if(cont>500 && cont<=550){
+                        pagina = 11;
+                    }else if(cont>550 && cont<=600){
+                        pagina = 12;
+                    }else if(cont>600 && cont<=650){
+                        pagina = 13;
+                    }else if(cont>650 && cont<=700){
+                        pagina = 14;
+                    }else if(cont>700 && cont<=750){
+                        pagina = 15;
+                    }else if(cont>750 && cont<=800){
+                        pagina = 16;
+                    }else if(cont>800 && cont<=850){
+                        pagina = 17;
+                    }else if(cont>850 && cont<=150){
+                        pagina = 18;
+                    }else if(cont>900 && cont<=900){
+                        pagina = 19;
+                    }else{pagina =20;}
+                    
+                    this.insertIndiceLibro(string1,pagina);
+                    
+                }              
             }
+            cont++;
         }
+        
     }
-    static void printwords(String str)
-    {
-        int contador =0;
-        str = str.trim().toLowerCase();
-            str = str.replaceAll("(\n|\r)", "");
-        if (str != null){           
-            String delims = "\\W+";
-            String[] tokens = str.split(delims);
-            for (String item : tokens) {
-                System.out.println(item + " ");
-            }
-        }
-    }
+    
 }
 

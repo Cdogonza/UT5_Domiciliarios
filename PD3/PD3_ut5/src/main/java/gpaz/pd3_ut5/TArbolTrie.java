@@ -37,7 +37,8 @@ public class TArbolTrie implements IArbolTrie {
         return null;
     
     }
-    public void indizarLibro(String texto, int linea){
+    
+    public void indizarLibro(String[] texto, int linea){
         if (raiz == null) {
             raiz = new TNodoTrie();
         }
